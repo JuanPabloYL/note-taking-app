@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+:root {
+  --neutral-950: #0e121b;
+  --neutral-900: #191b25;
+  --neutral-800: #232530;
+  --neutral-700: #2b303b;
+  --neutral-600: #525866;
+  --neutral-500: #717784;
+  --neutral-400: #99a0ae;
+  --neutral-300: #cacfd8;
+  --neutral-200: #e0e4ea;
+  --neutral-100: #f3f5f8;
+  --neutral-50: #f5f7fa;
+  --neutral-0: #ffffff;
+
+  --blue-700: #2547d0;
+  --blue-500: #335cff;
+  --blue-50: #ebf1ff;
+
+  --green-500: #21c16b;
+  --green-100: #d1fbe9;
+
+  --red-500: #fb3748;
+  --red-100: #ffd5d8;
+}
