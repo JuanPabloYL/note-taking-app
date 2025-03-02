@@ -8,7 +8,6 @@ export const NoteItem = ({ note }) => {
     year: "numeric",
   });
 
-  console.log(note);
   return (
     <Link
       to={`/note/${title}`}
