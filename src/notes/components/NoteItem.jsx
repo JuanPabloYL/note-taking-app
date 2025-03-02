@@ -1,12 +1,8 @@
 import { Link } from "react-router";
+import { getDate } from "../helpers/getDate";
 
 export const NoteItem = ({ note }) => {
   const { title, tags, lastEdited } = note;
-  const date = new Date(lastEdited).toLocaleDateString("en-GB", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
 
   return (
     <Link
@@ -24,7 +20,7 @@ export const NoteItem = ({ note }) => {
             </div>
           ))}
         </div>
-        <div className="pb-2 text-sm">{date}</div>
+        <div className="pb-2 text-sm">{getDate(lastEdited)}</div>
       </div>
     </Link>
   );
