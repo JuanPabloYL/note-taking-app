@@ -7,7 +7,9 @@ import { Note } from "../notes/components/Note";
 export const AppRouter = () => {
   return (
     <>
-      <Logo />
+      <div className="block lg:hidden">
+        <Logo />
+      </div>
       <Routes>
         <Route path="/home" element={<Notes />} />
         <Route path="/note/:id" element={<Note />} />

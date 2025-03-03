@@ -8,7 +8,7 @@ import settings from "../../assets/images/icon-settings.svg";
 
 export const MenuBar = () => {
   return (
-    <div className="flex fixed bottom-0 bg-white justify-between left-0 right-0 px-4 py-2">
+    <div className="flex fixed bottom-0 bg-white justify-between left-0 right-0 px-4 py-2 lg:hidden">
       <NavLink
         to={`/home`}
         className={({ isActive }) =>
