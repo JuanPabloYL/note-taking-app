@@ -7,7 +7,7 @@ export const NoteItem = ({ note }) => {
   return (
     <Link
       to={`/note/${title}`}
-      className="border-b border-b-gray-100 cursor-pointer"
+      className="border-b border-b-gray-200 cursor-pointer block"
     >
       <div className="px-2">
         <div className="mt-2">

@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { MenuBar } from "./MenuBar";
 import { NoteItem } from "./NoteItem";
 import { AuthContext } from "../../context/AuthContext";
+import { CreateNewButton } from "./CreateNewButton";
 
 export const Notes = () => {
   const { notes } = useContext(AuthContext);
@@ -14,6 +15,7 @@ export const Notes = () => {
           <NoteItem key={i} note={note} />
         ))}
       </ul>
+      <CreateNewButton />
     </div>
   );
 };

@@ -1,6 +1,6 @@
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { getNoteById } from "../helpers/getNoteById";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import arrowLeft from "../../assets/images/icon-arrow-left.svg";
 import iconDelete from "../../assets/images/icon-delete.svg";
@@ -10,10 +10,11 @@ import iconClock from "../../assets/images/icon-clock.svg";
 import { getDate } from "../helpers/getDate";
 
 export const Note = () => {
+  const navigate = useNavigate();
+
   const { notes } = useContext(AuthContext);
   const { id } = useParams();
   const note = getNoteById(id, notes);
-  console.log(note);
 
   if (!note) {
     return <p>NO NOTE</p>;
@@ -22,10 +23,13 @@ export const Note = () => {
     <div className="px-4 pt-2">
       <div className="flex items-center justify-between  border-b border-b-slate-200 pb-2">
         <div className="cursor-pointer">
-          <div className="flex items-center">
+          <button
+            className="flex items-center hover:cursor-pointer"
+            onClick={() => navigate(-1)}
+          >
             <img src={arrowLeft} alt="Icon Arrow Left" />
             Back
-          </div>
+          </button>
         </div>
         <div className="flex gap-5">
           <img className="cursor-pointer" src={iconDelete} alt="Icon Delete" />
@@ -74,7 +78,14 @@ export const Note = () => {
 
       {/* Info Content */}
       <div>
-        <p>{note.content}</p>
+        <p>
+          {note.content.split("\n").map((line, index) => (
+            <React.Fragment key={index}>
+              {line}
+              <br />
+            </React.Fragment>
+          ))}
+        </p>
       </div>
     </div>
   );
