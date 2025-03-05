@@ -11,7 +11,7 @@ export const AppRouter = () => {
         <Logo />
       </div>
       <Routes>
-        <Route path="/home" element={<Notes />} />
+        <Route path="/*" element={<Notes />} />
         <Route path="/note/:id" element={<Note />} />
       </Routes>
       <MenuBar />

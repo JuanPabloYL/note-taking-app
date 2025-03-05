@@ -16,6 +16,8 @@ export const Note = () => {
   const { id } = useParams();
   const note = getNoteById(id, notes);
 
+  console.log(note);
+
   if (!note) {
     return <p>NO NOTE</p>;
   }
