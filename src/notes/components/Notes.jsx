@@ -3,19 +3,20 @@ import { NoteItem } from "./NoteItem";
 import { AuthContext } from "../../context/AuthContext";
 import { CreateNewButton } from "./CreateNewButton";
 import { SideBar } from "./SideBar";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Note } from "./Note";
 import iconSearch from "../../assets/images/icon-search.svg";
 import iconSettings from "../../assets/images/icon-settings.svg";
 import iconArchive from "../../assets/images/icon-archive.svg";
+import iconArrowLeft from "../../assets/images/icon-arrow-left.svg";
 import iconDelete from "../../assets/images/icon-delete.svg";
 import { getNoteById } from "../helpers/getNoteById";
 
 export const Notes = () => {
   const { notes } = useContext(AuthContext);
   const { id, tag } = useParams();
-  const obj = useParams();
   const note = getNoteById(id, notes);
+  const navigate = useNavigate();
   console.log(tag);
 
   const titles = {
@@ -36,7 +37,9 @@ export const Notes = () => {
 
         <div className="col-start-3 col-end-14 lg:grid grid-cols-[repeat(8,1fr)] lg:grid-rows-[repeat(1,4rem)] min-h-screen">
           <div className="hidden col-span-full lg:flex justify-between py-4 pr-5 border-b border-b-gray-300">
-            <h2 className="font-bold text-3xl">All Notes</h2>
+            <h2 className="font-bold text-3xl">
+              {tag ? `Notes Tagged: ${tag}` : "All Notes"}
+            </h2>
 
             <div className="flex items-center gap-5">
               <div className="relative">
@@ -62,11 +65,34 @@ export const Notes = () => {
 
           {/* Notes List Section */}
           <div className="col-span-2 border-r border-r-gray-200 row-start-2 px-2">
-            <h2 className="font-bold text-3xl lg:hidden">All Notes</h2>
+            {tag ? (
+              <>
+                <button
+                  className="lg:hidden hover:cursor-pointer text-gray-400 flex items-center gap-2 mb-2"
+                  onClick={() => navigate(-1)}
+                >
+                  <img
+                    className="w-4"
+                    src={iconArrowLeft}
+                    alt="Icon Arrow Left"
+                  />
+                  Go Back
+                </button>
+                <h2 className="font-bold text-3xl lg:hidden">All Notes</h2>
+              </>
+            ) : (
+              <h2 className="font-bold text-3xl lg:hidden">All Notes</h2>
+            )}
             <button className="hidden lg:block mt-4 bg-indigo-500 py-2 w-full text-white rounded-xl hover:cursor-pointer">
               +Create New Note
             </button>
-            <ul className="pt-4">
+
+            {tag && (
+              <p className="text-gray-800 py-2 hidden lg:block">
+                All notes with the "{tag}" tag are shown here.
+              </p>
+            )}
+            <ul className="">
               {filteredNotes.map((note, i) => (
                 <NoteItem key={i} note={note} />
               ))}

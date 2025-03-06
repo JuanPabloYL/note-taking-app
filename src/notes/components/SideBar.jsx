@@ -22,7 +22,7 @@ export const SideBar = () => {
           <NavLink
             to={`/home`}
             className={({ isActive }) =>
-              `hover:cursor-pointer flex justify-between rounded-xl p-1 ${
+              `hover:cursor-pointer flex justify-between rounded-xl p-1 mb-2 ${
                 isActive ? "bg-indigo-100" : ""
               }`
             }
