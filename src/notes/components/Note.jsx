@@ -23,7 +23,7 @@ export const Note = () => {
   }
   return (
     <div className="px-4 pt-2">
-      <div className="flex items-center justify-between  border-b border-b-slate-200 pb-2">
+      <div className="flex items-center justify-between  border-b border-b-slate-200 pb-2 lg:hidden">
         <div className="cursor-pointer">
           <button
             className="flex items-center hover:cursor-pointer"

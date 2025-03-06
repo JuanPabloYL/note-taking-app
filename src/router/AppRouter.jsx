@@ -12,7 +12,7 @@ export const AppRouter = () => {
       </div>
       <Routes>
         <Route path="/*" element={<Notes />} />
-        <Route path="/note/:id" element={<Note />} />
+        <Route path="/note/:id" element={<Notes />} />
       </Routes>
       <MenuBar />
     </>

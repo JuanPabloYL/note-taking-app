@@ -14,7 +14,7 @@ export const SideBar = () => {
 
   const tags = getTags(notes);
   return (
-    <div className="hidden lg:block col-span-3 border-r border-r-gray-200">
+    <div className="hidden lg:block col-span-2 border-r border-r-gray-200">
       <Logo />
 
       <div className="px-4 mt-2">
