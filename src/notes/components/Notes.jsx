@@ -3,17 +3,31 @@ import { NoteItem } from "./NoteItem";
 import { AuthContext } from "../../context/AuthContext";
 import { CreateNewButton } from "./CreateNewButton";
 import { SideBar } from "./SideBar";
-import { useParams, useNavigate } from "react-router";
+import { useParams } from "react-router";
 import { Note } from "./Note";
 import iconSearch from "../../assets/images/icon-search.svg";
 import iconSettings from "../../assets/images/icon-settings.svg";
+import iconArchive from "../../assets/images/icon-archive.svg";
+import iconDelete from "../../assets/images/icon-delete.svg";
 import { getNoteById } from "../helpers/getNoteById";
 
 export const Notes = () => {
   const { notes } = useContext(AuthContext);
-  const { id } = useParams();
-  const navigate = useNavigate();
+  const { id, tag } = useParams();
+  const obj = useParams();
   const note = getNoteById(id, notes);
+  console.log(tag);
+
+  const titles = {
+    home: "All Notes",
+    archived: "Archived Notes",
+  };
+
+  let filteredNotes = notes;
+  if (tag) {
+    filteredNotes =
+      filteredNotes.filter((notes) => notes.tags.includes(tag)) || [];
+  }
 
   return (
     <>
@@ -38,15 +52,22 @@ export const Notes = () => {
                 />
               </div>
 
-              <img className="w-7" src={iconSettings} alt="Icon Settings" />
+              <img
+                className="w-7 hover:cursor-pointer"
+                src={iconSettings}
+                alt="Icon Settings"
+              />
             </div>
           </div>
 
           {/* Notes List Section */}
-          <div className="col-span-2 border-r border-r-gray-200 row-start-2">
+          <div className="col-span-2 border-r border-r-gray-200 row-start-2 px-2">
             <h2 className="font-bold text-3xl lg:hidden">All Notes</h2>
+            <button className="hidden lg:block mt-4 bg-indigo-500 py-2 w-full text-white rounded-xl hover:cursor-pointer">
+              +Create New Note
+            </button>
             <ul className="pt-4">
-              {notes.map((note, i) => (
+              {filteredNotes.map((note, i) => (
                 <NoteItem key={i} note={note} />
               ))}
             </ul>
@@ -55,21 +76,30 @@ export const Notes = () => {
 
           {/* Desktop Layout: Note inside the grid */}
           <div className="hidden lg:block col-span-4 border-r border-r-gray-200">
-            {note ? <Note /> : <p>Browse your notes!</p>}
+            {note && <Note />}
           </div>
 
           {/* Mobile Layout: Note full-screen */}
           {id && (
             <div className="fixed inset-0 bg-white z-50 p-4 lg:hidden">
-              <button
-                className="absolute top-2 left-2 bg-gray-200 px-3 py-1 rounded"
-                onClick={() => navigate("/")}
-              >
-                Back
-              </button>
               <Note />
             </div>
           )}
+
+          <div className="hidden lg:block col-span-2 pt-4">
+            {id && (
+              <div className="px-4 flex flex-col gap-4">
+                <button className="hover:cursor-pointer border rounded-xl p-2 border-gray-300 flex gap-2 w-full">
+                  <img src={iconArchive} alt="Icon Archive" />
+                  Archive Note
+                </button>
+                <button className="hover:cursor-pointer border rounded-xl p-2 border-gray-300 flex gap-2 w-full">
+                  <img src={iconDelete} alt="Icon Archive" />
+                  Delete Note
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </>

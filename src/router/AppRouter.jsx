@@ -13,6 +13,7 @@ export const AppRouter = () => {
       <Routes>
         <Route path="/*" element={<Notes />} />
         <Route path="/note/:id" element={<Notes />} />
+        <Route path="/tags/:tag" element={<Notes />} />
       </Routes>
       <MenuBar />
     </>

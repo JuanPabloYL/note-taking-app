@@ -21,7 +21,11 @@ export const SideBar = () => {
         <div className="border-b border-b-gray-200 pb-4">
           <NavLink
             to={`/home`}
-            className="hover:cursor-pointer flex justify-between"
+            className={({ isActive }) =>
+              `hover:cursor-pointer flex justify-between rounded-xl p-1 ${
+                isActive ? "bg-indigo-100" : ""
+              }`
+            }
           >
             <div className="flex items-center gap-2">
               <img src={homeIcon} alt="Home Icon" />
@@ -31,8 +35,12 @@ export const SideBar = () => {
             <img src={arrowIcon} className="w-6" alt="Chevron Right" />
           </NavLink>
           <NavLink
-            to={`/home`}
-            className="hover:cursor-pointer flex justify-between mt-2"
+            to={`/archive-notes`}
+            className={({ isActive }) =>
+              `hover:cursor-pointer flex justify-between rounded-xl p-1 ${
+                isActive ? "bg-indigo-100" : ""
+              }`
+            }
           >
             <div className="flex items-center gap-2">
               <img src={archiveIcon} alt="Archive Icon" />
@@ -45,13 +53,18 @@ export const SideBar = () => {
           <p className="text-gray-500 mb-2">Tags</p>
           <ul className="flex flex-col gap-5">
             {[...tags].map((tag, i) => (
-              <li
+              <NavLink
+                to={`/tags/${tag}`}
                 key={i}
-                className="flex items-center gap-2 hover:cursor-pointer"
+                className={({ isActive }) =>
+                  `flex items-center gap-2 hover:cursor-pointer p-1 rounded-xl ${
+                    isActive ? "bg-indigo-100" : ""
+                  }`
+                }
               >
                 <img src={tagIcon} alt="Tag Icon" />
                 {tag}
-              </li>
+              </NavLink>
             ))}
           </ul>
         </div>
