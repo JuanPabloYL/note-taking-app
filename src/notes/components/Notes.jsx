@@ -13,22 +13,35 @@ import iconDelete from "../../assets/images/icon-delete.svg";
 import { getNoteById } from "../helpers/getNoteById";
 
 export const Notes = () => {
-  const { notes } = useContext(AuthContext);
+  const { notes, searchParam, setSearchParam } = useContext(AuthContext);
   const { id, tag } = useParams();
   const note = getNoteById(id, notes);
   const navigate = useNavigate();
-  console.log(tag);
 
-  const titles = {
-    home: "All Notes",
-    archived: "Archived Notes",
-  };
-
+  let title = "All Notes";
   let filteredNotes = notes;
+
+  // Filter notes based on the tag
   if (tag) {
     filteredNotes =
-      filteredNotes.filter((notes) => notes.tags.includes(tag)) || [];
+      filteredNotes.filter((note) => note.tags.includes(tag)) || [];
+    title = `Notes Tagged: ${tag}`;
   }
+
+  // Filter notes based on searchParam (search by title, content, or tags)
+  if (searchParam) {
+    filteredNotes = filteredNotes.filter(
+      (note) =>
+        note.title.toLowerCase().includes(searchParam.toLowerCase()) ||
+        note.content.toLowerCase().includes(searchParam.toLowerCase()) ||
+        note.tags.some((tag) =>
+          tag.toLowerCase().includes(searchParam.toLowerCase())
+        )
+    );
+    title = `Showing results for: "${searchParam}"`;
+  }
+
+  console.log(searchParam);
 
   return (
     <>
@@ -37,9 +50,10 @@ export const Notes = () => {
 
         <div className="col-start-3 col-end-14 lg:grid grid-cols-[repeat(8,1fr)] lg:grid-rows-[repeat(1,4rem)] min-h-screen">
           <div className="hidden col-span-full lg:flex justify-between py-4 pr-5 border-b border-b-gray-300">
-            <h2 className="font-bold text-3xl">
-              {tag ? `Notes Tagged: ${tag}` : "All Notes"}
-            </h2>
+            <h2
+              className="font-bold text-3xl"
+              dangerouslySetInnerHTML={{ __html: title }}
+            ></h2>
 
             <div className="flex items-center gap-5">
               <div className="relative">
@@ -47,6 +61,8 @@ export const Notes = () => {
                   className="pl-8 border rounded-2xl border-gray-400 py-2 focus:outline-none"
                   type="text"
                   placeholder="Search by title, content, or tags..."
+                  value={searchParam}
+                  onChange={(e) => setSearchParam(e.target.value)}
                 />
                 <img
                   className="absolute top-2 left-1"
@@ -93,9 +109,11 @@ export const Notes = () => {
               </p>
             )}
             <ul className="">
-              {filteredNotes.map((note, i) => (
-                <NoteItem key={i} note={note} />
-              ))}
+              {filteredNotes.length ? (
+                filteredNotes.map((note, i) => <NoteItem key={i} note={note} />)
+              ) : (
+                <p className="mt-2">No Notes to Show</p>
+              )}
             </ul>
             <CreateNewButton />
           </div>

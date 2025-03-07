@@ -4,6 +4,7 @@ import { AuthContext } from "./AuthContext";
 export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [notes, setNotes] = useState([]);
+  const [searchParam, setSearchParam] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,7 +18,16 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ notes, setNotes, loading, setLoading }}>
+    <AuthContext.Provider
+      value={{
+        notes,
+        setNotes,
+        loading,
+        setLoading,
+        searchParam,
+        setSearchParam,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
