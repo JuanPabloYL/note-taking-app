@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router";
-import { getNoteById } from "../helpers/getNoteById";
+import { getNoteByTitle } from "../helpers/getNoteById";
 import React, { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import arrowLeft from "../../assets/images/icon-arrow-left.svg";
@@ -9,14 +9,8 @@ import iconTag from "../../assets/images/icon-tag.svg";
 import iconClock from "../../assets/images/icon-clock.svg";
 import { getDate } from "../helpers/getDate";
 
-export const Note = () => {
+export const Note = ({ note }) => {
   const navigate = useNavigate();
-
-  const { notes } = useContext(AuthContext);
-  const { id } = useParams();
-  const note = getNoteById(id, notes);
-
-  console.log(note);
 
   if (!note) {
     return <p>NO NOTE</p>;

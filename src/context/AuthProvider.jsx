@@ -4,6 +4,7 @@ import { AuthContext } from "./AuthContext";
 export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [notes, setNotes] = useState([]);
+  const [archiveNote, setarchiveNote] = useState([]);
   const [searchParam, setSearchParam] = useState("");
 
   useEffect(() => {
@@ -17,6 +18,16 @@ export const AuthProvider = ({ children }) => {
     fetchData();
   }, []);
 
+  const handleArchiveNote = (userNote) => {
+    const exists = notes.some((note) => note.id === userNote.id);
+    console.log("handleArchiveNote");
+
+    if (!exists) {
+      console.log("archived!");
+      setarchiveNote((prevValue) => ({ ...prevValue, userNote }));
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -26,6 +37,7 @@ export const AuthProvider = ({ children }) => {
         setLoading,
         searchParam,
         setSearchParam,
+        handleArchiveNote,
       }}
     >
       {children}

@@ -10,9 +10,8 @@ export const Tags = () => {
 
   const tags = getTags(notes);
 
-  console.log(tags);
   return (
-    <div className=" px-5 pt-5">
+    <div className="lg:hidden px-5 pt-5">
       <h2 className="text-3xl font-bold">Tags</h2>
       <div
         className="flex

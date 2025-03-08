@@ -1,3 +1,3 @@
-export const getNoteById = (id, notes) => {
-  return notes.find((note) => note.title === id);
+export const getNoteByTitle = (title, notes) => {
+  return notes.find((note) => note.title === title);
 };

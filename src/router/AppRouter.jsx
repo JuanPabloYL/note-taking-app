@@ -1,8 +1,9 @@
 import { Navigate, Route, Routes } from "react-router";
-import { Notes } from "../notes/components/Notes";
 import { Logo } from "../notes/components/Logo";
 import { MenuBar } from "../notes/components/MenuBar";
-import { Note } from "../notes/components/Note";
+import { AllNotes } from "../notes/components/AllNotes";
+import { SingleNote } from "../notes/components/SingleNote";
+import { FilterNotes } from "../notes/components/FilterNotes";
 import { Tags } from "../notes/components/Tags";
 
 export const AppRouter = () => {
@@ -12,12 +13,13 @@ export const AppRouter = () => {
         <Logo />
       </div>
       <Routes>
-        <Route path="/note/:id" element={<Notes />} />
-        <Route path="/home" element={<Notes />} />
-        <Route path="/tags/:tag" element={<Notes />} />
-        <Route path="/tags" element={<Tags />} />
-        <Route path="/archive-notes" element={<Notes />} />
+        <Route path="/home" element={<AllNotes />} />
 
+        <Route path="/note/:title" element={<SingleNote />} />
+        <Route path="/tags/:tag" element={<FilterNotes />} />
+        {/* <Route path="/note/:id" element={<Notes />} />
+        <Route path="/archive-notes" element={<Notes />} /> */}
+        <Route path="/tags" element={<Tags />} />
         <Route path="/*" element={<Navigate to={`/home`} />} />
       </Routes>
       <MenuBar />
