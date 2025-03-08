@@ -1,5 +1,4 @@
-import { useNavigate, useParams } from "react-router";
-import { getNoteByTitle } from "../helpers/getNoteById";
+import { useNavigate } from "react-router";
 import React, { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import arrowLeft from "../../assets/images/icon-arrow-left.svg";
@@ -10,6 +9,7 @@ import iconClock from "../../assets/images/icon-clock.svg";
 import { getDate } from "../helpers/getDate";
 
 export const Note = ({ note }) => {
+  const { handleArchiveNote, handleDeleteNote } = useContext(AuthContext);
   const navigate = useNavigate();
 
   if (!note) {
@@ -28,12 +28,21 @@ export const Note = ({ note }) => {
           </button>
         </div>
         <div className="flex gap-5">
-          <img className="cursor-pointer" src={iconDelete} alt="Icon Delete" />
-          <img
-            className="cursor-pointer"
-            src={iconArchive}
-            alt="Icon Archive"
-          />
+          <button onClick={() => handleDeleteNote(note)}>
+            <img
+              className="cursor-pointer"
+              src={iconDelete}
+              alt="Icon Delete"
+            />
+          </button>
+
+          <button onClick={() => handleArchiveNote(note)}>
+            <img
+              className="cursor-pointer"
+              src={iconArchive}
+              alt="Icon Archive"
+            />
+          </button>
           <p className="cursor-pointer">Cancel</p>
           <p className="text-indigo-500 cursor-pointer">Save Note</p>
         </div>

@@ -12,8 +12,13 @@ import iconArchive from "../../assets/images/icon-archive.svg";
 import iconDelete from "../../assets/images/icon-delete.svg";
 
 export const SingleNote = () => {
-  const { notes, searchParam, setSearchParam, handelArchiveNote } =
-    useContext(AuthContext);
+  const {
+    notes,
+    searchParam,
+    setSearchParam,
+    handleArchiveNote,
+    handleDeleteNote,
+  } = useContext(AuthContext);
   const { title } = useParams();
   const note = getNoteByTitle(title, notes);
 
@@ -66,22 +71,34 @@ export const SingleNote = () => {
             <CreateNewButton />
           </div>
 
-          <div className="col-span-4 border-r border-r-gray-200">
+          <div
+            className={`col-span-4  ${
+              note ? "border-r border-r-gray-200" : ""
+            }`}
+          >
             <Note note={note} />
           </div>
 
-          <div className="hidden lg:block col-span-2 pt-4">
-            <div className="px-4 flex flex-col gap-4">
-              <button className="hover:cursor-pointer border rounded-xl p-2 border-gray-300 flex gap-2 w-full">
-                <img src={iconArchive} alt="Icon Archive" />
-                Archive Note
-              </button>
-              <button className="hover:cursor-pointer border rounded-xl p-2 border-gray-300 flex gap-2 w-full">
-                <img src={iconDelete} alt="Icon Archive" />
-                Delete Note
-              </button>
+          {note && (
+            <div className="hidden lg:block col-span-2 pt-4">
+              <div className="px-4 flex flex-col gap-4">
+                <button
+                  onClick={() => handleArchiveNote(note)}
+                  className="hover:cursor-pointer border rounded-xl p-2 border-gray-300 flex gap-2 w-full"
+                >
+                  <img src={iconArchive} alt="Icon Archive" />
+                  Archive Note
+                </button>
+                <button
+                  onClick={() => handleDeleteNote(note)}
+                  className="hover:cursor-pointer border rounded-xl p-2 border-gray-300 flex gap-2 w-full"
+                >
+                  <img src={iconDelete} alt="Icon Archive" />
+                  Delete Note
+                </button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </>
