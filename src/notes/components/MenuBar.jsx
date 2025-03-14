@@ -32,7 +32,7 @@ export const MenuBar = () => {
         Search
       </NavLink>
       <NavLink
-        to={`/archived`}
+        to={`/archive-notes`}
         className={({ isActive }) =>
           `flex items-center flex-col px-5 py-2 rounded ${
             isActive ? "bg-indigo-100" : ""

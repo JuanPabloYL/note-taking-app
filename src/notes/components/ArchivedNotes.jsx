@@ -6,8 +6,8 @@ import { SideBar } from "./SideBar";
 import iconSearch from "../../assets/images/icon-search.svg";
 import iconSettings from "../../assets/images/icon-settings.svg";
 
-export const AllNotes = () => {
-  const { notes, searchParam, setSearchParam } = useContext(AuthContext);
+export const ArchivedNotes = () => {
+  const { archiveNotes, searchParam, setSearchParam } = useContext(AuthContext);
 
   return (
     <>
@@ -48,9 +48,14 @@ export const AllNotes = () => {
               +Create New Note
             </button>
 
+            <p className="mt-4 text-gray-700">
+              All your archived notes are stored here. You can restore or delete
+              them anytime.
+            </p>
+
             <ul className="">
-              {notes.length ? (
-                notes.map((note, i) => <NoteItem key={i} note={note} />)
+              {archiveNotes.length ? (
+                archiveNotes.map((note, i) => <NoteItem key={i} note={note} />)
               ) : (
                 <p className="mt-2">No Notes to Show</p>
               )}

@@ -21,25 +21,22 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const handleArchiveNote = (userNote) => {
-    const exists = archiveNotes.some((note) => note.id === userNote.id);
-    console.log("handleArchiveNote");
-
-    if (!exists) {
-      console.log("archived!");
-      setarchiveNotes((prevValue) => [...prevValue, userNote]);
-    }
-    console.log(archiveNotes);
+    setarchiveNotes((prevArchiveNotes) => {
+      if (prevArchiveNotes.some((note) => note.id === userNote.id)) {
+        return prevArchiveNotes;
+      }
+      return [...prevArchiveNotes, userNote];
+    });
   };
 
   const handleDeleteNote = (userNote) => {
-    const exists = notes.some((note) => note.id === userNote.id);
-
-    if (exists) {
-      const updatedNotes = notes.filter((note) => note.id !== userNote.id);
-      setNotes(updatedNotes);
-      navigate(-1);
-    }
-    console.log(notes);
+    setNotes((prevNotes) =>
+      prevNotes.filter((note) => note.id !== userNote.id)
+    );
+    setarchiveNotes((prevArchiveNotes) =>
+      prevArchiveNotes.filter((note) => note.id !== userNote.id)
+    );
+    navigate(-1);
   };
 
   return (
@@ -53,6 +50,7 @@ export const AuthProvider = ({ children }) => {
         setSearchParam,
         handleArchiveNote,
         handleDeleteNote,
+        archiveNotes,
       }}
     >
       {children}
