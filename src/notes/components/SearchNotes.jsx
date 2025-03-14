@@ -4,16 +4,8 @@ import { NoteItem } from "./NoteItem";
 import iconSearch from "../../assets/images/icon-search.svg";
 
 export const SearchNotes = () => {
-  const { notes, searchParam, setSearchParam } = useContext(AuthContext);
-
-  const filteredNotes = notes.filter(
-    (note) =>
-      note.title.toLowerCase().includes(searchParam.toLowerCase()) ||
-      note.content.toLowerCase().includes(searchParam.toLowerCase()) ||
-      note.tags.some((tag) =>
-        tag.toLowerCase().includes(searchParam.toLowerCase())
-      )
-  );
+  const { searchParam, setSearchParam, filteredNotes } =
+    useContext(AuthContext);
 
   return (
     <div className="mx-5">

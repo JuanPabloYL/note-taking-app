@@ -7,6 +7,7 @@ import { FilterNotes } from "../notes/components/FilterNotes";
 import { Tags } from "../notes/components/Tags";
 import { ArchivedNotes } from "../notes/components/ArchivedNotes";
 import { SearchNotes } from "../notes/components/SearchNotes";
+import { CreateNote } from "../notes/components/CreateNote";
 
 export const AppRouter = () => {
   return (
@@ -22,6 +23,7 @@ export const AppRouter = () => {
         {/* <Route path="/note/:id" element={<Notes />} />
         /> */}
         <Route path="/tags" element={<Tags />} />
+        <Route path="/new-note" element={<CreateNote />} />
         <Route path="/search" element={<SearchNotes />} />
         <Route path="/archive-notes" element={<ArchivedNotes />} />
         <Route path="/*" element={<Navigate to={`/home`} />} />

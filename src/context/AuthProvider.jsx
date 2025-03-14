@@ -39,6 +39,17 @@ export const AuthProvider = ({ children }) => {
     navigate(-1);
   };
 
+  const filteredNotes = notes.filter(
+    (note) =>
+      note.title.toLowerCase().includes(searchParam.toLowerCase()) ||
+      note.content.toLowerCase().includes(searchParam.toLowerCase()) ||
+      note.tags.some((tag) =>
+        tag.toLowerCase().includes(searchParam.toLowerCase())
+      )
+  );
+
+  const createNoteBtn = () => navigate("/new-note");
+
   return (
     <AuthContext.Provider
       value={{
@@ -51,6 +62,8 @@ export const AuthProvider = ({ children }) => {
         handleArchiveNote,
         handleDeleteNote,
         archiveNotes,
+        filteredNotes,
+        createNoteBtn,
       }}
     >
       {children}

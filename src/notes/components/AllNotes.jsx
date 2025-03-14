@@ -7,20 +7,12 @@ import iconSearch from "../../assets/images/icon-search.svg";
 import iconSettings from "../../assets/images/icon-settings.svg";
 
 export const AllNotes = () => {
-  const { notes, searchParam, setSearchParam } = useContext(AuthContext);
-
-  const filteredNotes = notes.filter(
-    (note) =>
-      note.title.toLowerCase().includes(searchParam.toLowerCase()) ||
-      note.content.toLowerCase().includes(searchParam.toLowerCase()) ||
-      note.tags.some((tag) =>
-        tag.toLowerCase().includes(searchParam.toLowerCase())
-      )
-  );
+  const { searchParam, setSearchParam, filteredNotes, createNoteBtn } =
+    useContext(AuthContext);
 
   return (
     <>
-      <div className="rounded-t px-4 pt-5 pb-21 lg:grid lg:grid-cols-[repeat(13,1fr)] gap-4 lg:rounded-none lg:p-0">
+      <div className="rounded-t px-4 pt-5 pb-21 lg:grid lg:grid-cols-[repeat(13,1fr)] gap-4 lg:rounded-none lg:p-0 lg:h-screen lg:overflow-hidden">
         <SideBar />
 
         <div className="col-start-3 col-end-14 lg:grid grid-cols-[repeat(8,1fr)] lg:grid-rows-[repeat(1,4rem)] min-h-screen">
@@ -57,11 +49,14 @@ export const AllNotes = () => {
 
           {/* Notes List Section */}
           <div className="col-span-2 border-r border-r-gray-200 row-start-2 px-2">
-            <button className="hidden lg:block mt-4 bg-indigo-500 py-2 w-full text-white rounded-xl hover:cursor-pointer">
+            <button
+              onClick={createNoteBtn}
+              className="hidden lg:block mt-4 bg-indigo-500 py-2 w-full text-white rounded-xl hover:cursor-pointer"
+            >
               +Create New Note
             </button>
 
-            <ul className="">
+            <ul className="lg:overflow-y-auto lg:h-screen">
               {filteredNotes.length ? (
                 filteredNotes.map((note, i) => <NoteItem key={i} note={note} />)
               ) : (
