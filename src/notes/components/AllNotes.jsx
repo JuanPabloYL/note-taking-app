@@ -9,6 +9,15 @@ import iconSettings from "../../assets/images/icon-settings.svg";
 export const AllNotes = () => {
   const { notes, searchParam, setSearchParam } = useContext(AuthContext);
 
+  const filteredNotes = notes.filter(
+    (note) =>
+      note.title.toLowerCase().includes(searchParam.toLowerCase()) ||
+      note.content.toLowerCase().includes(searchParam.toLowerCase()) ||
+      note.tags.some((tag) =>
+        tag.toLowerCase().includes(searchParam.toLowerCase())
+      )
+  );
+
   return (
     <>
       <div className="rounded-t px-4 pt-5 pb-21 lg:grid lg:grid-cols-[repeat(13,1fr)] gap-4 lg:rounded-none lg:p-0">
@@ -16,7 +25,11 @@ export const AllNotes = () => {
 
         <div className="col-start-3 col-end-14 lg:grid grid-cols-[repeat(8,1fr)] lg:grid-rows-[repeat(1,4rem)] min-h-screen">
           <div className="hidden col-span-full lg:flex justify-between py-4 pr-5 border-b border-b-gray-300">
-            <h2 className="font-bold text-3xl">All Notes</h2>
+            <h2 className="font-bold text-3xl">
+              {!searchParam
+                ? "All Notes"
+                : `Showing results for: "${searchParam}"`}
+            </h2>
 
             <div className="flex items-center gap-5">
               <div className="relative">
@@ -49,8 +62,8 @@ export const AllNotes = () => {
             </button>
 
             <ul className="">
-              {notes.length ? (
-                notes.map((note, i) => <NoteItem key={i} note={note} />)
+              {filteredNotes.length ? (
+                filteredNotes.map((note, i) => <NoteItem key={i} note={note} />)
               ) : (
                 <p className="mt-2">No Notes to Show</p>
               )}
