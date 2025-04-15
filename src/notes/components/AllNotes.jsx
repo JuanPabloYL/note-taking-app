@@ -49,21 +49,15 @@ export const AllNotes = () => {
 
           {/* Notes List Section */}
           <div className="col-span-2 border-r border-r-gray-200 row-start-2 px-2">
-            <button
-              onClick={createNoteBtn}
-              className="hidden lg:block mt-4 bg-indigo-500 py-2 w-full text-white rounded-xl hover:cursor-pointer"
-            >
-              +Create New Note
-            </button>
+            <CreateNewButton />
 
-            <ul className="lg:overflow-y-auto lg:h-screen">
+            <ul className="lg:overflow-y-auto lg:h-screen pb-30">
               {filteredNotes.length ? (
                 filteredNotes.map((note, i) => <NoteItem key={i} note={note} />)
               ) : (
                 <p className="mt-2">No Notes to Show</p>
               )}
             </ul>
-            <CreateNewButton />
           </div>
         </div>
       </div>

@@ -57,9 +57,7 @@ export const SingleNote = () => {
 
           {/* Notes List Section */}
           <div className="hidden lg:block col-span-2 border-r border-r-gray-200 row-start-2 px-2">
-            <button className="hidden lg:block mt-4 bg-indigo-500 py-2 w-full text-white rounded-xl hover:cursor-pointer">
-              +Create New Note
-            </button>
+            <CreateNewButton />
 
             <ul className="">
               {notes.length ? (
@@ -68,7 +66,6 @@ export const SingleNote = () => {
                 <p className="mt-2">No Notes to Show</p>
               )}
             </ul>
-            <CreateNewButton />
           </div>
 
           <div

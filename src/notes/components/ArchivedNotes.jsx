@@ -44,9 +44,7 @@ export const ArchivedNotes = () => {
 
           {/* Notes List Section */}
           <div className="col-span-2 border-r border-r-gray-200 row-start-2 px-2">
-            <button className="hidden lg:block mt-4 bg-indigo-500 py-2 w-full text-white rounded-xl hover:cursor-pointer">
-              +Create New Note
-            </button>
+            <CreateNewButton />
 
             <p className="mt-4 text-gray-700">
               All your archived notes are stored here. You can restore or delete
@@ -60,7 +58,6 @@ export const ArchivedNotes = () => {
                 <p className="mt-2">No Notes to Show</p>
               )}
             </ul>
-            <CreateNewButton />
           </div>
         </div>
       </div>

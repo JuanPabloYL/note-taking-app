@@ -48,9 +48,7 @@ export const FilterNotes = () => {
 
           {/* Notes List Section */}
           <div className="col-span-2 border-r border-r-gray-200 row-start-2 px-2">
-            <button className="hidden lg:block mt-4 bg-indigo-500 py-2 w-full text-white rounded-xl hover:cursor-pointer">
-              +Create New Note
-            </button>
+            <CreateNewButton />
 
             <ul className="">
               {filteredNotes.length ? (
@@ -59,7 +57,6 @@ export const FilterNotes = () => {
                 <p className="mt-2">No Notes to Show</p>
               )}
             </ul>
-            <CreateNewButton />
           </div>
         </div>
       </div>
