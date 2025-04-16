@@ -8,6 +8,8 @@ import { Tags } from "../notes/components/Tags";
 import { ArchivedNotes } from "../notes/components/ArchivedNotes";
 import { SearchNotes } from "../notes/components/SearchNotes";
 import { CreateNote } from "../notes/components/CreateNote";
+import { LoginPage } from "../pages/LoginPage";
+import { SignUpPage } from "../pages/SignUpPage";
 
 export const AppRouter = () => {
   return (
@@ -20,6 +22,8 @@ export const AppRouter = () => {
 
         <Route path="/note/:title" element={<SingleNote />} />
         <Route path="/tags/:tag" element={<FilterNotes />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="sign-up" element={<SignUpPage />} />
         {/* <Route path="/note/:id" element={<Notes />} />
         /> */}
         <Route path="/tags" element={<Tags />} />

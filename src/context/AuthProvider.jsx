@@ -1,6 +1,16 @@
 import { useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import { useNavigate } from "react-router";
+import { signInWithGoogle } from "../firebase/providers";
+
+const initialUserState = {
+  uid: null,
+  displayName: null,
+  email: null,
+  photoURL: null,
+  status: false,
+};
+
 const init = [
   {
     id: "note-1",
@@ -105,6 +115,7 @@ export const AuthProvider = ({ children }) => {
   const [searchParam, setSearchParam] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [user, setUser] = useState(initialUserState);
 
   useEffect(() => {
     const storedNotes = JSON.parse(localStorage.getItem("notes"));
@@ -197,6 +208,30 @@ export const AuthProvider = ({ children }) => {
     console.log("Note saved:", newNote);
   };
 
+  // const checkinAuthentication = (email, password) => {};
+
+  useEffect(() => {
+    console.log("User updated:", user);
+  }, [user]);
+
+  const startGoogleSignIn = async () => {
+    const result = await signInWithGoogle();
+
+    // console.log(user);
+    if (result.ok) {
+      setUser({
+        uid: result.uid,
+        displayName: result.displayName,
+        email: result.email,
+        photoURL: result.photoURL,
+        status: true,
+      });
+      console.log(user);
+    } else {
+      setUser(initialUserState);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -216,6 +251,7 @@ export const AuthProvider = ({ children }) => {
         setShowModal,
         showDeleteModal,
         setShowDeleteModal,
+        startGoogleSignIn,
       }}
     >
       {children}
