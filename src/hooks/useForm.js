@@ -1,13 +1,20 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-const init = {
-  name: "",
-  email: "",
-  password: "",
-};
-
-export const useForm = (initialState) => {
+export const useForm = (initialState = {}, formValidations = {}) => {
   const [formData, setFormData] = useState(initialState);
+  const [formValidation, setFormValidation] = useState({});
+
+  useEffect(() => {
+    createValidators();
+  }, [formData]);
+
+  const isFormValid = useMemo(() => {
+    for (const formValue of Object.keys(formValidation)) {
+      if (formValidation[formValue] !== null) return false;
+    }
+
+    return true;
+  }, [formValidation]);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -18,11 +25,31 @@ export const useForm = (initialState) => {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Submitted form:", formData);
-    // You can now send `formData` to Firebase or another API
+  const onResetForm = () => {
+    setFormData(initialState);
   };
 
-  return { formData, setFormData, handleChange, handleSubmit };
+  const createValidators = () => {
+    const formCheckedValues = {};
+
+    for (const formField of Object.keys(formValidations)) {
+      const [fn, errorMessage = "Error Validation"] =
+        formValidations[formField];
+
+      formCheckedValues[`${formField}Valid`] = fn(formData[formField])
+        ? null
+        : errorMessage;
+    }
+
+    setFormValidation(formCheckedValues);
+  };
+
+  return {
+    formData,
+    setFormData,
+    onResetForm,
+    handleChange,
+    ...formValidation,
+    isFormValid,
+  };
 };

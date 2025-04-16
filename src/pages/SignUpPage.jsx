@@ -1,14 +1,14 @@
 import logo from "../assets/images/logo.svg";
 import googleLogo from "../assets/images/icon-google.svg";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useForm } from "../hooks/useForm";
 
 const formValidations = {
   email: [(value) => value.includes("@"), "The email should have @"],
   password: [
-    (value) => value.length <= 6,
-    "The password should have at leas 6 characters",
+    (value) => value.length >= 6,
+    "The password should have at least 6 characters",
   ],
   name: [(value) => value.length >= 1, "The name is mandatory"],
 };
@@ -20,15 +20,30 @@ const init = {
 };
 
 export const SignUpPage = () => {
+  const [formSubmitted, setFormSubmitted] = useState(false);
   const { startGoogleSignIn } = useContext(AuthContext);
-  const { handleSubmit, handleChange, formData } = useForm(
-    init,
-    formValidations
-  );
+  const {
+    handleChange,
+    formData,
+    isFormValid,
+    nameValid,
+    emailValid,
+    passwordValid,
+  } = useForm(init, formValidations);
+
+  console.log(nameValid, emailValid, passwordValid);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setFormSubmitted(true);
+    console.log("Submitted form:", formData);
+    // You can now send `formData` to Firebase or another API
+  };
 
   return (
     <div className="bg-indigo-50 h-screen grid place-content-center ">
       <form className="bg-white p-7 w-2xl" onSubmit={handleSubmit}>
+        <h1>formValid {isFormValid ? "vALIDO" : "INVALIDO"}</h1>
         <div className="flex flex-col items-center text-center">
           <img src={logo} alt="Logo" />
           <div className="py-2">
@@ -71,7 +86,7 @@ export const SignUpPage = () => {
             <input
               type="password"
               id="password"
-              placeholder="email@example.com"
+              placeholder="password"
               className="border border-gray-200 rounded p-2"
               value={formData.password}
               onChange={handleChange}

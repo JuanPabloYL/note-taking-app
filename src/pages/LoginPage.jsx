@@ -5,6 +5,7 @@ import { AuthContext } from "../context/AuthContext";
 
 export const LoginPage = () => {
   const { startGoogleSignIn } = useContext(AuthContext);
+
   return (
     <div className="bg-indigo-50 h-screen grid place-content-center ">
       <form className="bg-white p-7 w-2xl">
