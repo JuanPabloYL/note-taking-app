@@ -8,9 +8,11 @@ import iconTag from "../../assets/images/icon-tag.svg";
 import iconClock from "../../assets/images/icon-clock.svg";
 import { getDate } from "../helpers/getDate";
 import { ArchiveNoteAlert } from "./ArchiveNoteAlert";
+import { DeleteNoteAlert } from "./DeleteNoteAlert";
 
 export const Note = ({ note }) => {
-  const { handleDeleteNote, setShowModal, showModal } = useContext(AuthContext);
+  const { setShowModal, showModal, showDeleteModal, setShowDeleteModal } =
+    useContext(AuthContext);
   const navigate = useNavigate();
 
   if (!note) {
@@ -30,7 +32,7 @@ export const Note = ({ note }) => {
             </button>
           </div>
           <div className="flex gap-5">
-            <button onClick={() => handleDeleteNote(note)}>
+            <button onClick={() => setShowDeleteModal(true)}>
               <img
                 className="cursor-pointer"
                 src={iconDelete}
@@ -96,6 +98,7 @@ export const Note = ({ note }) => {
         </div>
       </div>
       {showModal && <ArchiveNoteAlert note={note} />}
+      {showDeleteModal && <DeleteNoteAlert note={note} />}
     </>
   );
 };

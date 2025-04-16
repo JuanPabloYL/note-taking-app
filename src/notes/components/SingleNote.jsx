@@ -10,6 +10,8 @@ import { getNoteByTitle } from "../helpers/getNoteById";
 import { Note } from "./Note";
 import iconArchive from "../../assets/images/icon-archive.svg";
 import iconDelete from "../../assets/images/icon-delete.svg";
+import { ArchiveNoteAlert } from "./ArchiveNoteAlert";
+import { DeleteNoteAlert } from "./DeleteNoteAlert";
 
 export const SingleNote = () => {
   const {
@@ -18,6 +20,10 @@ export const SingleNote = () => {
     setSearchParam,
     handleArchiveNote,
     handleDeleteNote,
+    setShowModal,
+    setShowDeleteModal,
+    showModal,
+    showDeleteModal,
   } = useContext(AuthContext);
   const { title } = useParams();
   const note = getNoteByTitle(title, notes);
@@ -80,14 +86,14 @@ export const SingleNote = () => {
             <div className="hidden lg:block col-span-2 pt-4">
               <div className="px-4 flex flex-col gap-4">
                 <button
-                  onClick={() => handleArchiveNote(note)}
+                  onClick={() => setShowModal(true)}
                   className="hover:cursor-pointer border rounded-xl p-2 border-gray-300 flex gap-2 w-full"
                 >
                   <img src={iconArchive} alt="Icon Archive" />
                   Archive Note
                 </button>
                 <button
-                  onClick={() => handleDeleteNote(note)}
+                  onClick={() => setShowDeleteModal(true)}
                   className="hover:cursor-pointer border rounded-xl p-2 border-gray-300 flex gap-2 w-full"
                 >
                   <img src={iconDelete} alt="Icon Archive" />
@@ -98,6 +104,8 @@ export const SingleNote = () => {
           )}
         </div>
       </div>
+      {showModal && <ArchiveNoteAlert note={note} />}
+      {showDeleteModal && <DeleteNoteAlert note={note} />}
     </>
   );
 };

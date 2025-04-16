@@ -104,6 +104,7 @@ export const AuthProvider = ({ children }) => {
   const [archiveNotes, setArchiveNotes] = useState([]);
   const [searchParam, setSearchParam] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(() => {
     const storedNotes = JSON.parse(localStorage.getItem("notes"));
@@ -213,6 +214,8 @@ export const AuthProvider = ({ children }) => {
         handleSaveNewNote,
         showModal,
         setShowModal,
+        showDeleteModal,
+        setShowDeleteModal,
       }}
     >
       {children}

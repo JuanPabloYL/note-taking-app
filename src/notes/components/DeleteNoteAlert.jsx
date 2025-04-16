@@ -1,13 +1,14 @@
-import { useContext } from "react";
-import iconArchive from "../../assets/images/icon-archive.svg";
 import { AuthContext } from "../../context/AuthContext";
 
-export const ArchiveNoteAlert = ({ note }) => {
-  const { setShowModal, handleArchiveNote } = useContext(AuthContext);
+import { useContext } from "react";
+import iconDelete from "../../assets/images/icon-delete.svg";
 
-  const onArchive = () => {
-    handleArchiveNote(note);
-    setShowModal(false);
+export const DeleteNoteAlert = ({ note }) => {
+  const { setShowDeleteModal, handleDeleteNote } = useContext(AuthContext);
+
+  const onDelete = () => {
+    setShowDeleteModal(false);
+    handleDeleteNote(note);
   };
 
   return (
@@ -15,10 +16,10 @@ export const ArchiveNoteAlert = ({ note }) => {
       <div className="flex flex-col bg-white rounded w-1/2 mx-auto">
         <div className="flex border-b border-b-slate-400 pb-5 px-3 pt-3">
           <div className="pt-5 px-5">
-            <img src={iconArchive} className="w-15" alt="Icon Archive" />
+            <img src={iconDelete} className="w-15" alt="Icon Archive" />
           </div>
           <div className="">
-            <h2 className="font-bold  ">Archive Note</h2>
+            <h2 className="font-bold  ">Delete Note</h2>
             <p>
               Are you sure you want to archive this note? You can find it in the
               Archive Notes section and restore it anytime.
@@ -29,15 +30,15 @@ export const ArchiveNoteAlert = ({ note }) => {
         <div className="flex justify-end gap-2 py-2 px-3">
           <button
             className="px-5 cursor-pointer bg-gray-200 rounded py-2"
-            onClick={() => setShowModal(false)}
+            onClick={() => setShowDeleteModal(false)}
           >
             Cancel
           </button>
           <button
-            className="px-5 cursor-pointer bg-indigo-500 rounded py-2 text-white"
-            onClick={onArchive}
+            className="px-5 cursor-pointer bg-red-500 rounded py-2 text-white"
+            onClick={onDelete}
           >
-            Archive Note
+            Delete Note
           </button>
         </div>
       </div>
