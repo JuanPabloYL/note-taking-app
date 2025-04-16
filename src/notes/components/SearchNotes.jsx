@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { NoteItem } from "./NoteItem";
 import iconSearch from "../../assets/images/icon-search.svg";
+import { AddMobile } from "./AddMobile";
 
 export const SearchNotes = () => {
   const { searchParam, setSearchParam, filteredNotes } =
@@ -38,6 +39,8 @@ export const SearchNotes = () => {
           <p className="mt-2">No Notes to Show</p>
         )}
       </ul>
+
+      <AddMobile />
     </div>
   );
 };

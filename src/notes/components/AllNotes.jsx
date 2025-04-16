@@ -5,6 +5,7 @@ import { CreateNewButton } from "./CreateNewButton";
 import { SideBar } from "./SideBar";
 import iconSearch from "../../assets/images/icon-search.svg";
 import iconSettings from "../../assets/images/icon-settings.svg";
+import { AddMobile } from "./AddMobile";
 
 export const AllNotes = () => {
   const { searchParam, setSearchParam, filteredNotes, createNoteBtn } =
@@ -60,6 +61,8 @@ export const AllNotes = () => {
             </ul>
           </div>
         </div>
+
+        <AddMobile />
       </div>
     </>
   );
