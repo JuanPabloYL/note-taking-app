@@ -2,6 +2,7 @@ import { useContext } from "react";
 import logo from "../assets/images/logo.svg";
 import googleLogo from "../assets/images/icon-google.svg";
 import { AuthContext } from "../context/AuthContext";
+import { Link } from "react-router";
 
 export const LoginPage = () => {
   const { startGoogleSignIn } = useContext(AuthContext);
@@ -64,9 +65,9 @@ export const LoginPage = () => {
         <div className="border-t border-t-slate-200 text-center">
           <p className="py-2">
             Not account yet?{" "}
-            <button type="button" className="font-bold">
+            <Link to={`/sign-up`} className="font-bold">
               Sign Up
-            </button>
+            </Link>
           </p>
         </div>
       </form>

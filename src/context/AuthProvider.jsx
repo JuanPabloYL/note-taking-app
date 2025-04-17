@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import { useNavigate } from "react-router";
 import { signInWithGoogle } from "../firebase/providers";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { FirebaseAuth } from "../firebase/config";
 
 const initialUserState = {
@@ -118,6 +118,7 @@ export const AuthProvider = ({ children }) => {
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [user, setUser] = useState(initialUserState);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     const storedNotes = JSON.parse(localStorage.getItem("notes"));
@@ -243,9 +244,36 @@ export const AuthProvider = ({ children }) => {
       );
       const { uid, photoURL } = response.user;
       console.log(response);
+
+      await updateProfile(FirebaseAuth.currentUser, { displayName: name });
+      return {
+        ok: true,
+        uid,
+        photoURL,
+        email,
+        name,
+      };
     } catch (error) {
+      setErrorMessage(error.message);
       return { ok: false, errorMessage: error.message };
     }
+  };
+
+  const startUserEmailPassword = async ({ email, password, name }) => {
+    const result = await registerUserEmailPassword({ email, password, name });
+
+    if (!result.ok) {
+      setUser(initialUserState);
+      return;
+    }
+
+    setUser({
+      uid: result.uid,
+      name: result.name,
+      email: result.email,
+      photoURL: result.photoURL,
+      status: true,
+    });
   };
 
   return (
@@ -268,7 +296,10 @@ export const AuthProvider = ({ children }) => {
         showDeleteModal,
         setShowDeleteModal,
         startGoogleSignIn,
-        registerUserEmailPassword,
+        setUser,
+        startUserEmailPassword,
+        ...user,
+        errorMessage,
       }}
     >
       {children}
