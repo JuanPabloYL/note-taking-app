@@ -1,6 +1,6 @@
 import logo from "../assets/images/logo.svg";
 import googleLogo from "../assets/images/icon-google.svg";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useForm } from "../hooks/useForm";
 
@@ -21,7 +21,7 @@ const init = {
 
 export const SignUpPage = () => {
   const [formSubmitted, setFormSubmitted] = useState(false);
-  const { startGoogleSignIn } = useContext(AuthContext);
+  const { registerUserEmailPassword } = useContext(AuthContext);
   const {
     handleChange,
     formData,
@@ -36,7 +36,9 @@ export const SignUpPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setFormSubmitted(true);
+    if (!isFormValid) return;
     console.log("Submitted form:", formData);
+    registerUserEmailPassword(formData);
     // You can now send `formData` to Firebase or another API
   };
 
@@ -65,6 +67,7 @@ export const SignUpPage = () => {
               value={formData.username}
               onChange={handleChange}
             />
+            {nameValid && <p className="pb-2 text-red-500">{nameValid}</p>}
           </div>
           <div className="flex flex-col">
             <label className="font-bold" htmlFor="email">
@@ -78,6 +81,7 @@ export const SignUpPage = () => {
               value={formData.email}
               onChange={handleChange}
             />
+            {emailValid && <p className="pb-2 text-red-500">{emailValid}</p>}
           </div>
           <div className="flex flex-col">
             <label className="font-bold" htmlFor="email">
@@ -91,6 +95,10 @@ export const SignUpPage = () => {
               value={formData.password}
               onChange={handleChange}
             />
+
+            {passwordValid && (
+              <p className="pb-2 text-red-500">{passwordValid}</p>
+            )}
           </div>
 
           <button
@@ -104,7 +112,7 @@ export const SignUpPage = () => {
         <div className="text-center border-b border-b-slate-200 pb-4">
           <p className="text-slate-400 py-3">Or log in with:</p>
           <button
-            onClick={() => startGoogleSignIn()}
+            // onClick={() => startGoogleSignIn()}
             type="button"
             className="flex gap-2 items-center justify-center cursor-pointer w-full py-2 text-gray-800 rounded border border-slate-500"
           >

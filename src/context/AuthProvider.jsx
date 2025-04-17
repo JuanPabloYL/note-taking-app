@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import { useNavigate } from "react-router";
 import { signInWithGoogle } from "../firebase/providers";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { FirebaseAuth } from "../firebase/config";
 
 const initialUserState = {
   uid: null,
-  displayName: null,
+  name: null,
   email: null,
   photoURL: null,
   status: false,
@@ -221,7 +223,7 @@ export const AuthProvider = ({ children }) => {
     if (result.ok) {
       setUser({
         uid: result.uid,
-        displayName: result.displayName,
+        name: result.name,
         email: result.email,
         photoURL: result.photoURL,
         status: true,
@@ -229,6 +231,20 @@ export const AuthProvider = ({ children }) => {
       console.log(user);
     } else {
       setUser(initialUserState);
+    }
+  };
+
+  const registerUserEmailPassword = async ({ email, password, name }) => {
+    try {
+      const response = await createUserWithEmailAndPassword(
+        FirebaseAuth,
+        email,
+        password
+      );
+      const { uid, photoURL } = response.user;
+      console.log(response);
+    } catch (error) {
+      return { ok: false, errorMessage: error.message };
     }
   };
 
@@ -252,6 +268,7 @@ export const AuthProvider = ({ children }) => {
         showDeleteModal,
         setShowDeleteModal,
         startGoogleSignIn,
+        registerUserEmailPassword,
       }}
     >
       {children}
