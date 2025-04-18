@@ -18,7 +18,6 @@ export const useCheckAuth = () => {
         });
       const { uid, email, displayName, photoURL } = user;
       setUser({ uid, email, displayName, photoURL, status: true });
-      console.log(user);
     });
   }, [status]);
 

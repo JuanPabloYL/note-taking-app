@@ -7,7 +7,8 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { FirebaseAuth } from "../firebase/config";
+import { FirebaseAuth, FirebaseDB } from "../firebase/config";
+import { collection, doc, setDoc } from "firebase/firestore/lite";
 
 const initialUserState = {
   uid: null,
@@ -15,6 +16,13 @@ const initialUserState = {
   email: null,
   photoURL: null,
   status: false,
+};
+
+const noteAppState = {
+  isSaving: false,
+  messageSaved: "",
+  notes: [],
+  active: null,
 };
 
 const init = [
@@ -123,6 +131,7 @@ export const AuthProvider = ({ children }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [user, setUser] = useState(initialUserState);
   const [errorMessage, setErrorMessage] = useState("");
+  const [noteApp, setNoteApp] = useState(noteAppState);
 
   useEffect(() => {
     const storedNotes = JSON.parse(localStorage.getItem("notes"));
@@ -302,6 +311,29 @@ export const AuthProvider = ({ children }) => {
     setUser(initialUserState);
   };
 
+  const startNewNote = async () => {
+    console.log("startNewNote");
+    const { uid } = user;
+
+    const newNote = {
+      title: "",
+      body: "",
+      date: new Date().getTime(),
+    };
+
+    const newDoc = doc(collection(FirebaseDB, `${uid}/app-notes/notes`));
+    await setDoc(newDoc, newNote);
+
+    newNote.id = newDoc.id;
+    setNoteApp((prev) => ({
+      ...prev,
+      notes: noteApp.notes.push(newNote),
+      isSaving: true,
+    }));
+  };
+
+  const startLoadingNotes = async () => {};
+
   return (
     <AuthContext.Provider
       value={{
@@ -328,6 +360,8 @@ export const AuthProvider = ({ children }) => {
         errorMessage,
         startLoginEmailPassword,
         startLogout,
+        startNewNote,
+        noteApp,
       }}
     >
       {children}
