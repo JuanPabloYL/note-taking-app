@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import { useNavigate } from "react-router";
 import { signInWithGoogle } from "../firebase/providers";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 import { FirebaseAuth } from "../firebase/config";
 
 const initialUserState = {
@@ -180,7 +184,6 @@ export const AuthProvider = ({ children }) => {
     const inputContent = content.trim();
 
     if (!inputTags.length || !inputTitle || !inputContent) {
-      console.warn("Please fill out all fields properly.");
       return;
     }
 
@@ -198,7 +201,6 @@ export const AuthProvider = ({ children }) => {
 
     setNotes((prevNotes) => {
       const updatedNotes = [...prevNotes, newNote];
-      console.log("Updated notes state:", updatedNotes); // Check updated notes state
 
       // Update localStorage after state update
       localStorage.setItem("notes", JSON.stringify(updatedNotes));
@@ -207,20 +209,11 @@ export const AuthProvider = ({ children }) => {
 
     // Navigate back or to notes page
     navigate("/");
-
-    console.log("Note saved:", newNote);
   };
-
-  // const checkinAuthentication = (email, password) => {};
-
-  useEffect(() => {
-    console.log("User updated:", user);
-  }, [user]);
 
   const startGoogleSignIn = async () => {
     const result = await signInWithGoogle();
 
-    // console.log(user);
     if (result.ok) {
       setUser({
         uid: result.uid,
@@ -229,7 +222,6 @@ export const AuthProvider = ({ children }) => {
         photoURL: result.photoURL,
         status: true,
       });
-      console.log(user);
     } else {
       setUser(initialUserState);
     }
@@ -243,7 +235,6 @@ export const AuthProvider = ({ children }) => {
         password
       );
       const { uid, photoURL } = response.user;
-      console.log(response);
 
       await updateProfile(FirebaseAuth.currentUser, { displayName: name });
       return {
@@ -276,6 +267,32 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
+  const startLoginEmailPassword = async ({ email, password }) => {
+    const response = await loginWithEmailPassword({ email, password });
+
+    if (!response.ok) {
+      setErrorMessage(response.errorMessage);
+      setUser(initialUserState);
+    }
+    setErrorMessage("");
+    setUser(response);
+  };
+
+  const loginWithEmailPassword = async ({ email, password }) => {
+    try {
+      const response = await signInWithEmailAndPassword(
+        FirebaseAuth,
+        email,
+        password
+      );
+      const { uid, photoURL, displayName } = response.user;
+
+      return { ok: true, uid, photoURL, displayName };
+    } catch (error) {
+      return { ok: false, errorMessage: error.message };
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -300,6 +317,7 @@ export const AuthProvider = ({ children }) => {
         startUserEmailPassword,
         ...user,
         errorMessage,
+        startLoginEmailPassword,
       }}
     >
       {children}

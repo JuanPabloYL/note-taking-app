@@ -3,13 +3,46 @@ import logo from "../assets/images/logo.svg";
 import googleLogo from "../assets/images/icon-google.svg";
 import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router";
+import { useForm } from "../hooks/useForm";
+
+const formValidations = {
+  email: [(value) => value.includes("@"), "The email should have @"],
+  password: [
+    (value) => value.length >= 6,
+    "The password should have at least 6 characters",
+  ],
+  name: [(value) => value.length >= 1, "The name is mandatory"],
+};
+
+const init = {
+  name: "",
+  email: "",
+  password: "",
+};
 
 export const LoginPage = () => {
-  const { startGoogleSignIn } = useContext(AuthContext);
+  const { startGoogleSignIn, startLoginEmailPassword, errorMessage } =
+    useContext(AuthContext);
+  const {
+    handleChange,
+    formData,
+    isFormValid,
+    nameValid,
+    emailValid,
+    passwordValid,
+  } = useForm(init, formValidations);
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    startLoginEmailPassword({
+      email: formData.email,
+      password: formData.password,
+    });
+  };
 
   return (
     <div className="bg-indigo-50 h-screen grid place-content-center ">
-      <form className="bg-white p-7 w-2xl">
+      <form className="bg-white p-7 w-2xl" onSubmit={onSubmit}>
         <div className="flex flex-col items-center text-center">
           <img src={logo} alt="Logo" />
           <div className="py-2">
@@ -28,6 +61,8 @@ export const LoginPage = () => {
               id="email"
               placeholder="email@example.com"
               className="border border-gray-200 rounded p-2"
+              value={formData.email}
+              onChange={handleChange}
             />
           </div>
           <div className="flex flex-col">
@@ -37,14 +72,16 @@ export const LoginPage = () => {
             <input
               type="password"
               id="password"
-              placeholder="email@example.com"
+              placeholder="password"
               className="border border-gray-200 rounded p-2"
+              value={formData.password}
+              onChange={handleChange}
             />
           </div>
 
           <button
             className="block w-full bg-indigo-600 text-white  py-2 mt-3 rounded cursor-pointer mb-2"
-            type="button"
+            type="submit"
           >
             Login
           </button>
@@ -70,6 +107,11 @@ export const LoginPage = () => {
             </Link>
           </p>
         </div>
+        {errorMessage && (
+          <div className="bg-red-300 text-center rounded py-2">
+            <p>{errorMessage}</p>
+          </div>
+        )}
       </form>
     </div>
   );

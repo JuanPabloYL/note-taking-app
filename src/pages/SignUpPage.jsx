@@ -39,7 +39,6 @@ export const SignUpPage = () => {
     e.preventDefault();
     setFormSubmitted(true);
     if (!isFormValid) return;
-    console.log("Submitted form:", formData);
     startUserEmailPassword(formData);
 
     // You can now send `formData` to Firebase or another API

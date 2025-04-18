@@ -18,7 +18,6 @@ export const useForm = (initialState = {}, formValidations = {}) => {
 
   const handleChange = (e) => {
     const { id, value } = e.target;
-    console.log(id);
     setFormData((prev) => ({
       ...prev,
       [id]: value,
@@ -40,8 +39,6 @@ export const useForm = (initialState = {}, formValidations = {}) => {
         ? null
         : errorMessage;
     }
-
-    console.log(formCheckedValues);
 
     setFormValidation(formCheckedValues);
   };
