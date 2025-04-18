@@ -278,6 +278,10 @@ export const AuthProvider = ({ children }) => {
     setUser(response);
   };
 
+  const logoutFirebase = async () => {
+    return await FirebaseAuth.signOut();
+  };
+
   const loginWithEmailPassword = async ({ email, password }) => {
     try {
       const response = await signInWithEmailAndPassword(
@@ -291,6 +295,11 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       return { ok: false, errorMessage: error.message };
     }
+  };
+
+  const startLogout = async () => {
+    await logoutFirebase();
+    setUser(initialUserState);
   };
 
   return (
@@ -318,6 +327,7 @@ export const AuthProvider = ({ children }) => {
         ...user,
         errorMessage,
         startLoginEmailPassword,
+        startLogout,
       }}
     >
       {children}

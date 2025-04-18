@@ -10,29 +10,10 @@ import { SearchNotes } from "../notes/components/SearchNotes";
 import { CreateNote } from "../notes/components/CreateNote";
 import { LoginPage } from "../pages/LoginPage";
 import { SignUpPage } from "../pages/SignUpPage";
-import { useContext, useEffect } from "react";
-import { AuthContext } from "../context/AuthContext";
-import { onAuthStateChanged } from "firebase/auth";
-import { FirebaseAuth } from "../firebase/config";
+import { useCheckAuth } from "../hooks/useCheckAuth";
 
 export const AppRouter = () => {
-  const { status, setUser } = useContext(AuthContext);
-
-  useEffect(() => {
-    onAuthStateChanged(FirebaseAuth, async (user) => {
-      if (!user)
-        return setUser({
-          uid: null,
-          name: null,
-          email: null,
-          photoURL: null,
-          status: false,
-        });
-      const { uid, email, displayName, photoURL } = user;
-      setUser({ uid, email, displayName, photoURL, status: true });
-      console.log(user);
-    });
-  }, []);
+  const { status } = useCheckAuth();
 
   return (
     <>
