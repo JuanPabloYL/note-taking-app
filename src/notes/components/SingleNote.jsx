@@ -24,9 +24,10 @@ export const SingleNote = () => {
     setShowDeleteModal,
     showModal,
     showDeleteModal,
+    noteApp,
   } = useContext(AuthContext);
   const { title } = useParams();
-  const note = getNoteByTitle(title, notes);
+  const note = getNoteByTitle(title, noteApp.notes);
 
   return (
     <>
@@ -66,8 +67,8 @@ export const SingleNote = () => {
             <CreateNewButton />
 
             <ul className="">
-              {notes.length ? (
-                notes.map((note, i) => <NoteItem key={i} note={note} />)
+              {noteApp.notes.length ? (
+                noteApp.notes.map((note, i) => <NoteItem key={i} note={note} />)
               ) : (
                 <p className="mt-2">No Notes to Show</p>
               )}

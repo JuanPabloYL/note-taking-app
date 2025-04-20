@@ -8,7 +8,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { FirebaseAuth, FirebaseDB } from "../firebase/config";
-import { collection, doc, setDoc } from "firebase/firestore/lite";
+import { collection, doc, getDocs, setDoc } from "firebase/firestore/lite";
 
 const initialUserState = {
   uid: null,
@@ -26,15 +26,6 @@ const noteAppState = {
 };
 
 const init = [
-  {
-    id: "note-1",
-    title: "React Performance Optimization",
-    tags: ["Dev", "React"],
-    content:
-      "Key performance optimization techniques:\n\n1. Code Splitting\n- Use React.lazy() for route-based splitting\n- Implement dynamic imports for heavy components\n\n2. Memoization\n- useMemo for expensive calculations\n- useCallback for function props\n- React.memo for component optimization\n\n3. Virtual List Implementation\n- Use react-window for long lists\n- Implement infinite scrolling\n\nTODO: Benchmark current application and identify bottlenecks",
-    lastEdited: "2024-10-29T10:15:00Z",
-    isArchived: false,
-  },
   {
     id: "note-2",
     title: "Japan Travel Planning",
@@ -80,42 +71,6 @@ const init = [
     lastEdited: "2024-10-20T11:30:15Z",
     isArchived: true,
   },
-  {
-    id: "note-7",
-    title: "React Component Library",
-    tags: ["Dev", "React"],
-    content:
-      "Custom Component Library Structure:\n\n1. Basic Components\n- Button\n- Input\n- Card\n- Modal\n\n2. Form Components\n- FormField\n- Select\n- Checkbox\n- RadioGroup\n\n3. Layout Components\n- Container\n- Grid\n- Flex\n\nAll components need:\n- TypeScript definitions\n- Unit tests\n- Storybook documentation\n- Accessibility support",
-    lastEdited: "2024-10-15T14:23:45Z",
-    isArchived: true,
-  },
-  {
-    id: "note-8",
-    title: "Meal Prep Ideas",
-    tags: ["Cooking", "Health", "Recipes"],
-    content:
-      "Weekly Meal Prep Plan:\n\nBreakfast Options:\n- Overnight oats\n- Egg muffins\n- Smoothie packs\n\nLunch Containers:\n- Greek chicken bowl\n- Buddha bowls\n- Tuna pasta salad\n\nSnacks:\n- Cut vegetables\n- Mixed nuts\n- Greek yogurt parfait\n\nPrep Time: Sunday 2-4pm\nStorage: Glass containers\nLasts: 4-5 days",
-    lastEdited: "2024-10-12T09:45:15Z",
-    isArchived: false,
-  },
-  {
-    id: "note-9",
-    title: "Reading List",
-    tags: ["Personal", "Dev"],
-    content:
-      "Current Reading Queue:\n\n1. Technical Books\n- Clean Architecture by Robert Martin\n- Designing Data-Intensive Applications\n- TypeScript Design Patterns\n\n2. Personal Development\n- Deep Work by Cal Newport\n- Atomic Habits\n- The Psychology of Money\n\nCurrently Reading: Clean Architecture\nNext Up: Deep Work\n\nGoal: One book per month",
-    lastEdited: "2024-10-05T12:20:30Z",
-    isArchived: false,
-  },
-  {
-    id: "note-10",
-    title: "Fitness Goals 2025",
-    tags: ["Fitness", "Health", "Personal"],
-    content:
-      "2025 Fitness Objectives:\n\n1. Strength Goals\n- Bench press: 225 lbs\n- Squat: 315 lbs\n- Deadlift: 405 lbs\n\n2. Cardio Goals\n- Run half marathon\n- 5k under 25 minutes\n\n3. Habits\n- Gym 4x per week\n- Daily 10k steps\n- Sleep 7+ hours\n\nTrack all workouts in Strong app",
-    lastEdited: "2024-09-22T07:30:00Z",
-    isArchived: false,
-  },
 ];
 
 export const AuthProvider = ({ children }) => {
@@ -160,16 +115,24 @@ export const AuthProvider = ({ children }) => {
   };
 
   const handleDeleteNote = (userNote) => {
-    setNotes((prevNotes) =>
-      prevNotes.filter((note) => note.id !== userNote.id)
-    );
+    // setNotes((prevNotes) =>
+    //   prevNotes.filter((note) => note.id !== userNote.id)
+    // );
+    // setArchiveNotes((prevArchiveNotes) =>
+    //   prevArchiveNotes.filter((note) => note.id !== userNote.id)
+    // );
+    setNoteApp((prev) => ({
+      ...prev,
+      notes: noteApp.notes.filter((note) => note.id !== userNote.id),
+    }));
+
     setArchiveNotes((prevArchiveNotes) =>
       prevArchiveNotes.filter((note) => note.id !== userNote.id)
     );
     navigate(-1);
   };
 
-  const filteredNotes = notes.filter(
+  const filteredNotes = noteApp.notes.filter(
     (note) =>
       note.title.toLowerCase().includes(searchParam.toLowerCase()) ||
       note.content.toLowerCase().includes(searchParam.toLowerCase()) ||
@@ -180,45 +143,45 @@ export const AuthProvider = ({ children }) => {
 
   const createNoteBtn = () => navigate("/new-note");
 
-  const handleSaveNewNote = (note, e) => {
-    e.preventDefault();
-    const { id, title, content, tags, isArchived = false } = note;
+  // const handleSaveNewNote = (note, e) => {
+  //   e.preventDefault();
+  //   const { id, title, content, tags, isArchived = false } = note;
 
-    const inputTags = tags
-      .split(",")
-      .map((tag) => tag.trim())
-      .filter((tag) => tag.length > 0);
+  //   const inputTags = tags
+  //     .split(",")
+  //     .map((tag) => tag.trim())
+  //     .filter((tag) => tag.length > 0);
 
-    const inputTitle = title.trim();
-    const inputContent = content.trim();
+  //   const inputTitle = title.trim();
+  //   const inputContent = content.trim();
 
-    if (!inputTags.length || !inputTitle || !inputContent) {
-      return;
-    }
+  //   if (!inputTags.length || !inputTitle || !inputContent) {
+  //     return;
+  //   }
 
-    const savedDate = new Date().toLocaleDateString("en-US");
+  //   const savedDate = new Date().toLocaleDateString("en-US");
 
-    const newNote = {
-      id: id || crypto.randomUUID(),
-      title: inputTitle,
-      content: inputContent,
-      tags: inputTags,
-      lastEdited: savedDate,
-      lastUpdate: savedDate,
-      isArchived,
-    };
+  //   const newNote = {
+  //     id: id || crypto.randomUUID(),
+  //     title: inputTitle,
+  //     content: inputContent,
+  //     tags: inputTags,
+  //     lastEdited: savedDate,
+  //     lastUpdate: savedDate,
+  //     isArchived,
+  //   };
 
-    setNotes((prevNotes) => {
-      const updatedNotes = [...prevNotes, newNote];
+  //   setNotes((prevNotes) => {
+  //     const updatedNotes = [...prevNotes, newNote];
 
-      // Update localStorage after state update
-      localStorage.setItem("notes", JSON.stringify(updatedNotes));
-      return updatedNotes;
-    });
+  //     // Update localStorage after state update
+  //     localStorage.setItem("notes", JSON.stringify(updatedNotes));
+  //     return updatedNotes;
+  //   });
 
-    // Navigate back or to notes page
-    navigate("/");
-  };
+  //   // Navigate back or to notes page
+  //   navigate("/");
+  // };
 
   const startGoogleSignIn = async () => {
     const result = await signInWithGoogle();
@@ -285,6 +248,13 @@ export const AuthProvider = ({ children }) => {
     }
     setErrorMessage("");
     setUser(response);
+    // setUser({
+    //   uid: response.uid,
+    //   name: response.displayName,
+    //   email,
+    //   photoURL: response.photoURL,
+    //   status: true,
+    // });
   };
 
   const logoutFirebase = async () => {
@@ -311,14 +281,29 @@ export const AuthProvider = ({ children }) => {
     setUser(initialUserState);
   };
 
-  const startNewNote = async () => {
+  const startNewNote = async (note) => {
     console.log("startNewNote");
     const { uid } = user;
 
+    const { id, title, content, tags, isArchived = false } = note;
+
+    const inputTags = tags
+      .split(",")
+      .map((tag) => tag.trim())
+      .filter((tag) => tag.length > 0);
+
+    const inputTitle = title.trim();
+    const inputContent = content.trim();
+    const savedDate = new Date().toLocaleDateString("en-US");
+
     const newNote = {
-      title: "",
-      body: "",
-      date: new Date().getTime(),
+      id: id || crypto.randomUUID(),
+      title: inputTitle,
+      content: inputContent,
+      tags: inputTags,
+      lastEdited: savedDate,
+      lastUpdate: savedDate,
+      isArchived,
     };
 
     const newDoc = doc(collection(FirebaseDB, `${uid}/app-notes/notes`));
@@ -327,12 +312,43 @@ export const AuthProvider = ({ children }) => {
     newNote.id = newDoc.id;
     setNoteApp((prev) => ({
       ...prev,
-      notes: noteApp.notes.push(newNote),
+      notes: [...noteApp.notes, newNote],
       isSaving: true,
     }));
+
+    console.log(noteApp);
+
+    navigate("/");
   };
 
-  const startLoadingNotes = async () => {};
+  const loadNotes = async (uid = "") => {
+    if (!uid) throw new Error("The UID does not exts");
+
+    const collectionRef = collection(FirebaseDB, `${uid}/app-notes/notes`);
+    const docs = await getDocs(collectionRef);
+
+    const notes_fb = [];
+
+    docs.forEach((doc) => {
+      notes_fb.push({ id: doc.id, ...doc.data() });
+    });
+
+    return notes_fb;
+  };
+
+  const startLoadingNotes = async () => {
+    const { uid } = user;
+    console.log(user);
+    if (!uid) throw new Error("The UID does not exts");
+
+    const notes_fb = await loadNotes(uid);
+    setNoteApp((prev) => ({
+      ...prev,
+      notes: notes_fb,
+      isSaving: false,
+    }));
+    console.log(noteApp);
+  };
 
   return (
     <AuthContext.Provider
@@ -348,7 +364,7 @@ export const AuthProvider = ({ children }) => {
         archiveNotes,
         filteredNotes,
         createNoteBtn,
-        handleSaveNewNote,
+        // handleSaveNewNote,
         showModal,
         setShowModal,
         showDeleteModal,
@@ -362,6 +378,7 @@ export const AuthProvider = ({ children }) => {
         startLogout,
         startNewNote,
         noteApp,
+        startLoadingNotes,
       }}
     >
       {children}

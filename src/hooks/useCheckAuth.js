@@ -4,7 +4,7 @@ import { FirebaseAuth } from "../firebase/config";
 import { AuthContext } from "../context/AuthContext";
 
 export const useCheckAuth = () => {
-  const { status, setUser } = useContext(AuthContext);
+  const { status, setUser, startLoadingNotes } = useContext(AuthContext);
 
   useEffect(() => {
     onAuthStateChanged(FirebaseAuth, async (user) => {
@@ -18,6 +18,7 @@ export const useCheckAuth = () => {
         });
       const { uid, email, displayName, photoURL } = user;
       setUser({ uid, email, displayName, photoURL, status: true });
+      startLoadingNotes();
     });
   }, [status]);
 

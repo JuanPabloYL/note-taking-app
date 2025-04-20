@@ -7,8 +7,13 @@ import iconSearch from "../../assets/images/icon-search.svg";
 import iconSettings from "../../assets/images/icon-settings.svg";
 
 export const CreateNote = () => {
-  const { searchParam, setSearchParam, filteredNotes, handleSaveNewNote } =
-    useContext(AuthContext);
+  const {
+    searchParam,
+    setSearchParam,
+    filteredNotes,
+    handleSaveNewNote,
+    startNewNote,
+  } = useContext(AuthContext);
 
   const [note, setNote] = useState({
     id: new Date().getTime(),
@@ -18,6 +23,11 @@ export const CreateNote = () => {
     lastEdited: "",
     isArchived: false,
   });
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    startNewNote(note);
+  };
 
   return (
     <>
@@ -72,7 +82,7 @@ export const CreateNote = () => {
           {/* New Note form */}
           <form
             className="px-7 mt-5 col-span-4 border-r border-r-gray-200"
-            onSubmit={(e) => handleSaveNewNote(note, e)}
+            onSubmit={onSubmit}
           >
             <input
               className="font-bold text-3xl p-2 rounded-lg"

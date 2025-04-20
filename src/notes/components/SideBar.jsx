@@ -10,9 +10,10 @@ import { AuthContext } from "../../context/AuthContext";
 import { getTags } from "../helpers/getTags";
 
 export const SideBar = () => {
-  const { notes } = useContext(AuthContext);
+  // const { notes } = useContext(AuthContext);
+  const { noteApp } = useContext(AuthContext);
 
-  const tags = getTags(notes);
+  const tags = getTags(noteApp.notes);
   return (
     <div className="hidden lg:block col-span-2 border-r border-r-gray-200">
       <Logo />

@@ -8,10 +8,12 @@ import iconSearch from "../../assets/images/icon-search.svg";
 import iconSettings from "../../assets/images/icon-settings.svg";
 
 export const FilterNotes = () => {
-  const { notes, searchParam, setSearchParam } = useContext(AuthContext);
+  const { notes, searchParam, setSearchParam, noteApp } =
+    useContext(AuthContext);
   const { tag } = useParams();
 
-  const filteredNotes = notes.filter((note) => note.tags.includes(tag)) || [];
+  const filteredNotes =
+    noteApp.notes.filter((note) => note.tags.includes(tag)) || [];
 
   return (
     <>
