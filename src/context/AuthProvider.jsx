@@ -31,53 +31,7 @@ const noteAppState = {
   active: null,
 };
 
-const init = [
-  {
-    id: "note-2",
-    title: "Japan Travel Planning",
-    tags: ["Travel", "Personal"],
-    content:
-      "Japan Trip Planning - Spring 2025\n\nItinerary Draft:\nWeek 1: Tokyo\n- Shibuya and Harajuku\n- TeamLab Digital Art Museum\n- Day trip to Mount Fuji\n\nWeek 2: Kyoto & Osaka\n- Traditional temples\n- Cherry blossom viewing\n- Food tour in Osaka\n\nBudget: $3000\nAccommodation: Mix of hotels and traditional ryokans\nJR Pass: 14 days\n\nTODO: Book flights 6 months in advance",
-    lastEdited: "2024-10-28T16:45:00Z",
-    isArchived: false,
-  },
-  {
-    id: "note-3",
-    title: "Favorite Pasta Recipes",
-    tags: ["Cooking", "Recipes"],
-    content:
-      "Classic Italian Recipes:\n\n1. Carbonara\n- Eggs, pecorino, guanciale\n- No cream ever!\n- Save pasta water\n\n2. Cacio e Pepe\n- Pecorino Romano\n- Fresh black pepper\n- Technique is crucial\n\n3. Arrabbiata\n- San Marzano tomatoes\n- Fresh garlic\n- Red pepper flakes\n\nNote: Always use high-quality ingredients",
-    lastEdited: "2024-10-27T14:30:00Z",
-    isArchived: false,
-  },
-  {
-    id: "note-4",
-    title: "TypeScript Migration Guide",
-    tags: ["Dev", "React", "TypeScript"],
-    content:
-      "Project migration steps:\n\n1. Initial Setup\n- Install TypeScript dependencies\n- Configure tsconfig.json\n- Set up build pipeline\n\n2. Migration Strategy\n- Start with newer modules\n- Add type definitions gradually\n- Use 'any' temporarily for complex cases\n\n3. Testing Approach\n- Update test configuration\n- Add type testing\n- Validate build process\n\nDeadline: End of Q4 2024",
-    lastEdited: "2024-10-26T09:20:00Z",
-    isArchived: true,
-  },
-  {
-    id: "note-5",
-    title: "Weekly Workout Plan",
-    tags: ["Fitness", "Health"],
-    content:
-      "Monday: Upper Body\n- Bench Press 4x8\n- Rows 4x10\n- Shoulder Press 3x12\n- Pull-ups 3 sets\n\nWednesday: Lower Body\n- Squats 4x8\n- Romanian Deadlifts 3x10\n- Lunges 3x12 each\n- Calf Raises 4x15\n\nFriday: Full Body\n- Deadlifts 3x5\n- Push-ups 3x12\n- Leg Press 3x12\n- Core Work\n\nCardio: Tuesday/Thursday - 30 min run",
-    lastEdited: "2024-10-25T18:10:00Z",
-    isArchived: false,
-  },
-  {
-    id: "note-6",
-    title: "Gift Ideas",
-    tags: ["Personal", "Shopping"],
-    content:
-      "Birthday and Holiday Gift List:\n\nMom:\n- Cooking class subscription\n- Kindle Paperwhite\n- Spa day package\n\nDad:\n- Golf lessons\n- Wireless earbuds\n- BBQ accessories\n\nSister:\n- Art supplies set\n- Yoga mat kit\n- Coffee subscription\n\nBudget per person: $150-200",
-    lastEdited: "2024-10-20T11:30:15Z",
-    isArchived: true,
-  },
-];
+const init = [];
 
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
@@ -254,13 +208,6 @@ export const AuthProvider = ({ children }) => {
     }
     setErrorMessage("");
     setUser(response);
-    // setUser({
-    //   uid: response.uid,
-    //   name: response.displayName,
-    //   email,
-    //   photoURL: response.photoURL,
-    //   status: true,
-    // });
   };
 
   const logoutFirebase = async () => {
