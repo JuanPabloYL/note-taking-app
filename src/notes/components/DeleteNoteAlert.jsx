@@ -4,11 +4,13 @@ import { useContext } from "react";
 import iconDelete from "../../assets/images/icon-delete.svg";
 
 export const DeleteNoteAlert = ({ note }) => {
-  const { setShowDeleteModal, handleDeleteNote } = useContext(AuthContext);
+  const { setShowDeleteModal, handleDeleteNote, startDeletingNote } =
+    useContext(AuthContext);
 
   const onDelete = () => {
     setShowDeleteModal(false);
     handleDeleteNote(note);
+    startDeletingNote(note);
   };
 
   return (

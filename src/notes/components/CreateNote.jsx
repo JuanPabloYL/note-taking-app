@@ -7,13 +7,8 @@ import iconSearch from "../../assets/images/icon-search.svg";
 import iconSettings from "../../assets/images/icon-settings.svg";
 
 export const CreateNote = () => {
-  const {
-    searchParam,
-    setSearchParam,
-    filteredNotes,
-    handleSaveNewNote,
-    startNewNote,
-  } = useContext(AuthContext);
+  const { searchParam, setSearchParam, filteredNotes, startNewNote } =
+    useContext(AuthContext);
 
   const [note, setNote] = useState({
     id: new Date().getTime(),

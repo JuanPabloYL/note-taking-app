@@ -15,11 +15,8 @@ import { DeleteNoteAlert } from "./DeleteNoteAlert";
 
 export const SingleNote = () => {
   const {
-    notes,
     searchParam,
     setSearchParam,
-    handleArchiveNote,
-    handleDeleteNote,
     setShowModal,
     setShowDeleteModal,
     showModal,

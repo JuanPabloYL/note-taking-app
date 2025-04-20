@@ -8,7 +8,13 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { FirebaseAuth, FirebaseDB } from "../firebase/config";
-import { collection, doc, getDocs, setDoc } from "firebase/firestore/lite";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  setDoc,
+} from "firebase/firestore/lite";
 
 const initialUserState = {
   uid: null,
@@ -285,7 +291,7 @@ export const AuthProvider = ({ children }) => {
     console.log("startNewNote");
     const { uid } = user;
 
-    const { id, title, content, tags, isArchived = false } = note;
+    const { title, content, tags, isArchived = false } = note;
 
     const inputTags = tags
       .split(",")
@@ -297,7 +303,6 @@ export const AuthProvider = ({ children }) => {
     const savedDate = new Date().toLocaleDateString("en-US");
 
     const newNote = {
-      id: id || crypto.randomUUID(),
       title: inputTitle,
       content: inputContent,
       tags: inputTags,
@@ -307,7 +312,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const newDoc = doc(collection(FirebaseDB, `${uid}/app-notes/notes`));
-    await setDoc(newDoc, newNote);
+    await setDoc(newDoc, { ...newNote, id: newDoc.id });
 
     newNote.id = newDoc.id;
     setNoteApp((prev) => ({
@@ -347,7 +352,14 @@ export const AuthProvider = ({ children }) => {
       notes: notes_fb,
       isSaving: false,
     }));
-    console.log(noteApp);
+  };
+
+  const startDeletingNote = async (note) => {
+    const { uid } = user;
+    console.log(uid);
+
+    const docRef = doc(FirebaseDB, `${uid}/app-notes/notes/${note.id}`);
+    await deleteDoc(docRef);
   };
 
   return (
@@ -379,6 +391,7 @@ export const AuthProvider = ({ children }) => {
         startNewNote,
         noteApp,
         startLoadingNotes,
+        startDeletingNote,
       }}
     >
       {children}
